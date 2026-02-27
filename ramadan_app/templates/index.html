@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ramadan Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="dashboard">
+
+    <div class="top-bar">
+        <div>
+            👋 Welcome, <strong>{{ current_user.username }}</strong>
+        </div>
+        <a href="{{ url_for('logout') }}" class="btn-logout">Logout</a>
+    </div>
+
+    <h1>🌙 Ramadan Mubarak</h1>
+<a href="{{ url_for('monthly_calendar') }}" class="btn-secondary">Monthly Calendar</a>
+
+    <p class="location">
+        📍 {{ city }}, {{ country }}
+    </p>
+
+    <p class="date">📅 {{ today }}</p>
+
+    <!-- IFTAR COUNTDOWN -->
+    <div class="countdown-card">
+        <h3>🌆 Time Remaining for Iftar</h3>
+        <div id="iftar-timer">Loading...</div>
+    </div>
+
+    <div class="prayer-card">
+        <h3>Today's Prayer Times</h3>
+        <div class="prayer-item">🌅 Fajr <span>{{ timings.Fajr }}</span></div>
+        <div class="prayer-item">☀ Dhuhr <span>{{ timings.Dhuhr }}</span></div>
+        <div class="prayer-item">🌇 Asr <span>{{ timings.Asr }}</span></div>
+        <div class="prayer-item">🌆 Maghrib (Iftar) <span id="maghrib-time">{{ timings.Maghrib }}</span></div>
+        <div class="prayer-item">🌃 Isha <span>{{ timings.Isha }}</span></div>
+    </div>
+
+</div>
+
+<script>
+    function startIftarCountdown() {
+
+        let maghribTime = document.getElementById("maghrib-time").innerText;
+
+        let now = new Date();
+        let todayDate = now.toISOString().split('T')[0];
+
+        let iftarDateTime = new Date(todayDate + "T" + maghribTime);
+
+        function updateCountdown() {
+            let currentTime = new Date();
+            let difference = iftarDateTime - currentTime;
+
+            if (difference <= 0) {
+                document.getElementById("iftar-timer").innerHTML = "🎉 Iftar Time!";
+                return;
+            }
+
+            let hours = Math.floor(difference / (1000 * 60 * 60));
+            let minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            let seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+            document.getElementById("iftar-timer").innerHTML =
+                hours + "h " + minutes + "m " + seconds + "s";
+        }
+
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+    }
+
+    startIftarCountdown();
+</script>
+
+</body>
+</html>

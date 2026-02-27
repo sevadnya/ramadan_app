@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Monthly Ramadan Calendar</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="dashboard">
+
+    <div class="top-bar">
+        <div>
+            👋 Welcome, <strong>{{ current_user.username }}</strong>
+        </div>
+        <div>
+            <a href="{{ url_for('home') }}" class="btn-secondary">Home</a>
+            <a href="{{ url_for('logout') }}" class="btn-logout">Logout</a>
+        </div>
+    </div>
+
+    <h1>🌙 {{ month }} {{ year }}</h1>
+    <p class="location">📍 {{ city }}, {{ country }}</p>
+
+    <div class="calendar-table-wrapper">
+        <table class="calendar-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Fajr</th>
+                    <th>Dhuhr</th>
+                    <th>Asr</th>
+                    <th>Maghrib (Iftar)</th>
+                    <th>Isha</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for day in calendar_data %}
+                <tr>
+                    <td>{{ day.date.gregorian.date }}</td>
+                    <td>{{ day.timings.Fajr }}</td>
+                    <td>{{ day.timings.Dhuhr }}</td>
+                    <td>{{ day.timings.Asr }}</td>
+                    <td>{{ day.timings.Maghrib }}</td>
+                    <td>{{ day.timings.Isha }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+</body>
+</html>
