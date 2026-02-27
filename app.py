@@ -49,9 +49,9 @@ def monthly_calendar():
 
     url = "http://api.aladhan.com/v1/calendarByCity"
     params = {
-        "city": city,
-        "country": country,
-        "method": 2,
+         "city": "Pune",
+        "country": "India",
+          "method": 2,
         "month": month,
         "year": year
     }
@@ -128,4 +128,5 @@ def logout():
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
+
     app.run(debug=True)
